@@ -3,9 +3,11 @@ app/login/login_controller.py
 - '/login': ['POST']
 """
 
+from datetime import datetime, timedelta
 from flask import Flask, make_response, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from flask_sqlalchemy import SQLAlchemy
+import jwt
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -19,7 +21,6 @@ class User(db.Model):
 
     def __init__(self, email, password):
         self.email = email
-        # @TODO: Improve the hash by adding salt...
         self.password = generate_password_hash(password, method='sha256')
 
     def as_dict(self):
@@ -47,6 +48,7 @@ class UserResource(Resource):
 
         return {"User": data.email}
 
+
 class RegisterResource(Resource):
     def post(self):
         # Get the request data e.g. email, password
@@ -62,31 +64,56 @@ class RegisterResource(Resource):
                 db.session.add(new_user)
                 db.session.commit()
                 response = {
+                    'message': 'Register success',
                     'email': new_user.email,
-                    'message': 'created new user'
                 }
-                
+                # Send success 201 response
                 status = 201
             except Exception as e:
                 print(e)
-                response = {'message': 'internal server error'}
+                response = {'message': 'Internal server error.'}
                 status = 500
         else:
-            response = {
-                'message': 'User already exists. Please Log in.',
-            }
+            response = {'message': 'User already exists. Please Log in.'}
             status = 400
 
-        # Send success 201 response
         return make_response(jsonify(response), status)
 
 
 class LoginResource(Resource):
     def post(self):
         # Get the request data e.g. email, password
-        # Query the database via email if no user send an error
-        # Check that the users password in the payload matches database
-        # Issue a new JWT with 200 response
-        return 200
+        request_data = parser.parse_args()
+        print(request_data)
+
+        # Query the database via email, if no user send an error
+        db_user = User.query.filter_by(email=request_data['email']).first()
+        if db_user:
+            try: 
+                # Check that the users password in the payload matches database
+                if check_password_hash(db_user.password, request_data['password']):
+                    # Issue a new JWT with 200 response
+                    token = jwt.encode({
+                        'sub': db_user.id,
+                        'iat': datetime.utcnow(),
+                        'exp': datetime.utcnow() + timedelta(minutes=30)
+                    }, 'f028ddf9faebed44d1f8bc60b98dd504')# app.config['SECRET_KEY'])
+                    response = { 
+                        'message': 'Login success.',
+                        'token': token,
+                    }
+                    status = 200
+                else: 
+                    response = {'message': 'Invalid username or password.'}
+                    status = 400
+            except Exception as e:
+                print(e)
+                response = {'message': 'Internal server error.'}
+                status = 500    
+        else:
+            response = {'message': 'User does not exist. Please Register.'}
+            status = 400
+        
+        return make_response(jsonify(response), status)
     
 
