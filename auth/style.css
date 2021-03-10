@@ -5,20 +5,23 @@ body {
 }
 
 section.content {
-  display: -ms-flexbox;
+  height: calc(100vh - 4rem);
   display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  justify-content: flex-start;
   background-color: #f5f5f5;
+}
+
+.form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
 }
 
 .form-signin {
   width: 100%;
   max-width: 330px;
   padding: 15px;
-  margin: auto;
 }
 .form-signin .checkbox {
   font-weight: 400;
