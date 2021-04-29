@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "8dbd53cc-5833-49d4-b92f-f67626ec5455",
+		"name": "TransactionTracker API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "http://127.0.0.1:5000/api/v1/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test4_user@gmail.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/register",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:5000/api/v1/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test4_user@gmail.com\",\n    \"password\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "http://127.0.0.1:5000/api/v1/transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjcsImlhdCI6MTYxOTY3NzU5MywiZXhwIjoxNjE5Njc5MzkzfQ.BAjsfYinmO9IW6maNVKPCva6Zf1nvyGSmjnKNmYCYSc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transactionType\": \"debit\",\n    \"amount\": \"1.00\",\n    \"description\": \"Test2 from postman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/transaction",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://127.0.0.1:5000/api/v1/transaction",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjcsImlhdCI6MTYxOTY3ODE0MywiZXhwIjoxNjE5Njc5OTQzfQ.2LwH22ajTk6NhonQwNfJASj-j2Ri_0yAhEmmkq3EIFg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:5000/api/v1/transaction",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

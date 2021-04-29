@@ -1,10 +1,11 @@
 """
 app/login/login_controller.py
 - '/login': ['POST']
+- '/register': ['POST']
 """
 
 from datetime import datetime, timedelta
-from flask import Flask, make_response, jsonify
+from flask import current_app, Flask, make_response, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 import jwt
@@ -93,11 +94,15 @@ class LoginResource(Resource):
                 # Check that the users password in the payload matches database
                 if check_password_hash(db_user.password, request_data['password']):
                     # Issue a new JWT with 200 response
-                    token = jwt.encode({
-                        'sub': db_user.id,
-                        'iat': datetime.utcnow(),
-                        'exp': datetime.utcnow() + timedelta(minutes=30)
-                    }, 'f028ddf9faebed44d1f8bc60b98dd504')# app.config['SECRET_KEY'])
+                    token = jwt.encode(
+                        {
+                            'sub': db_user.id,
+                            'iat': datetime.utcnow(),
+                            'exp': datetime.utcnow() + timedelta(minutes=30)
+                        }, 
+                        current_app.config['SECRET_KEY'], 
+                        algorithm="HS256"
+                    )
                     response = { 
                         'message': 'Login success.',
                         'token': token,
