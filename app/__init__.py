@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-def create_app(app_name='SURVEY_API'):
+def create_app(app_name='TRANSACTION_TRACKER_API'):
     app = Flask(app_name)
     app.config.from_object('app.config.BaseConfig')
 
@@ -18,6 +18,9 @@ def create_app(app_name='SURVEY_API'):
 
     from app.login import api as login_api
     login_api.init_app(app)
+    
+    from app.transaction import api as transaction_api
+    transaction_api.init_app(app)
 
     db.init_app(app)   
 
